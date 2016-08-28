@@ -1,5 +1,22 @@
-import os.path
+#!/usr/bin/env python
+
+import os
+import sys
 from setuptools import setup, find_packages
+
+version = '5.1.0'
+
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    os.system('python setup.py bdist_wheel upload')
+    sys.exit()
+
+if sys.argv[-1] == 'tag':
+    os.system("git tag -a %s -m 'version %s'" % (version, version))
+    os.system("git push --tags")
+    sys.exit()
+
+long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read()
 
 
 def get_source_files():
@@ -9,13 +26,14 @@ def get_source_files():
 
 setup(
     name='django-ckeditor',
-    version='4.4.8',
+    version=version,
     description='Django admin CKEditor integration.',
-    long_description=open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
+    long_description=long_description,
     author='Shaun Sephton & Piotr Malinski',
     author_email='riklaunim@gmail.com',
-    url='https://github.com/shaunsephton/django-ckeditor',
+    url='https://github.com/django-ckeditor/django-ckeditor',
     packages=find_packages(exclude=["*.demo"]),
+    zip_safe=False,
     install_requires=[
         'Django',
     ],
@@ -25,6 +43,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Framework :: Django",
